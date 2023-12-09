@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { createRoot } from "react-dom/client"
 import { FileExplorer } from "./components/FileExplorer"
 import "./styles.css"
+import useTreeWalker from "./hooks/use-tree-walker"
 
 // App name is passed as prop
 interface AppProps {
@@ -18,7 +19,16 @@ export type FileItem = {
 
 export function App({ name }: AppProps) {
   const [fileExplorer, setFileExplorer] = useState<FileItem | null>(null)
+  const { insertNode } = useTreeWalker()
 
+  const handleInsertNode = (
+    fileExplorer: FileItem,
+    folderId: FileItem["id"],
+    payload: FileItem
+  ) => {
+    const finalTree = insertNode(fileExplorer, folderId, payload)
+    setFileExplorer(finalTree)
+  }
   useEffect(() => {
     initFileExplorer()
   }, [])
@@ -36,7 +46,12 @@ export function App({ name }: AppProps) {
     <>
       <h1>{name}</h1>
       <button onClick={initFileExplorer}>Demo</button>
-      {fileExplorer && <FileExplorer fileSystem={fileExplorer} />}
+      {fileExplorer && (
+        <FileExplorer
+          fileSystem={fileExplorer}
+          handleInsertNode={handleInsertNode}
+        />
+      )}
       <pre>{JSON.stringify(fileExplorer, null, 2)}</pre>
     </>
   )
