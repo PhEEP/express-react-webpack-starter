@@ -3,18 +3,11 @@ import { FileItem } from "../App"
 
 export const FileExplorer = ({ fileSystem }: { fileSystem: FileItem[] }) => {
   const [isExpanded, setIsExpanded] = useState(false)
-  const [selectedFile, setSelectedFile] = useState<FileItem | null>(null)
+  const [selectedItem, setSelectedItem] = useState<FileItem | null>(null)
 
-  const handleClick = (fileItem: FileItem) => {
-    if (fileItem.isFolder) {
-      setIsExpanded(!isExpanded)
-    } else {
-      setSelectedFile(fileItem)
-    }
-  }
-
+  // TODO add styling, icons, etc.
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "row" }}>
       <ul
         style={{
           listStyle: "none",
@@ -22,22 +15,44 @@ export const FileExplorer = ({ fileSystem }: { fileSystem: FileItem[] }) => {
         }}
       >
         {fileSystem.map((fileItem) => (
-          <li key={fileItem.id} onClick={() => handleClick(fileItem)}>
-            {fileItem.name}
+          <li key={fileItem.id} onClick={() => setSelectedItem(fileItem)}>
+            <span
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                ...(selectedItem?.id === fileItem.id
+                  ? { background: "lightGrey" }
+                  : null),
+              }}
+            >
+              {fileItem.isFolder ? (isExpanded ? "📂" : "📁") : "📄"}
+              {fileItem.name}
+              {fileItem.isFolder ? (
+                <span>
+                  <button onClick={() => setIsExpanded(!isExpanded)}>
+                    {isExpanded ? "Collapse" : "Expand"}
+                  </button>
+                  {<button>Add New</button>}
+                </span>
+              ) : null}
+              <button>Delete</button>
+            </span>
             {fileItem.isFolder && isExpanded && (
               <FileExplorer fileSystem={fileItem.items} />
             )}
           </li>
         ))}
       </ul>
-      <div>
-        {selectedFile && (
+      {/* add this back in when style available */}
+      {/* <div>
+        {selectedItem && (
           <div>
-            <h3>{selectedFile.name}</h3>
-            <p>{selectedFile.id}</p>
+            <h3>{selectedItem.name}</h3>
+            <p>{selectedItem.id}</p>
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   )
 }
