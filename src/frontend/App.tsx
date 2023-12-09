@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, { useState, useEffect } from "react"
 import { createRoot } from "react-dom/client"
 import { FileExplorer } from "./components/FileExplorer"
 import "./styles.css"
@@ -16,40 +16,30 @@ export type FileItem = {
   name: string
 }
 
-// AppState is the state of the App component, set initially to null
-interface AppState {
-  fileExplorer: FileItem | null
-}
+export function App({ name }: AppProps) {
+  const [fileExplorer, setFileExplorer] = useState<FileItem | null>(null)
 
-export class App extends React.Component<AppProps, AppState> {
-  constructor(props: AppProps) {
-    super(props)
-    this.state = {
-      fileExplorer: null,
-    }
-  }
+  useEffect(() => {
+    initFileExplorer()
+  }, [])
 
-  render() {
-    const { name } = this.props
-    const { fileExplorer } = this.state
-    return (
-      <>
-        <h1>{name}</h1>
-        <button onClick={() => this.initFileExplorer()}>Demo</button>
-        {this.state.fileExplorer && <FileExplorer fileSystem={fileExplorer} />}
-        <pre>{JSON.stringify(fileExplorer, null, 2)}</pre>
-      </>
-    )
-  }
-
-  private initFileExplorer = async () => {
+  const initFileExplorer = async () => {
     const response = await fetch("/api/initializeFileExplorer", {
       method: "GET",
     })
     if (response.ok) {
-      this.setState({ fileExplorer: await response.json() })
+      setFileExplorer(await response.json())
     }
   }
+
+  return (
+    <>
+      <h1>{name}</h1>
+      <button onClick={initFileExplorer}>Demo</button>
+      {fileExplorer && <FileExplorer fileSystem={fileExplorer} />}
+      <pre>{JSON.stringify(fileExplorer, null, 2)}</pre>
+    </>
+  )
 }
 
 export function start() {
