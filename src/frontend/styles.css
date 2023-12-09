@@ -1,0 +1,28 @@
+.folder {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem;
+  width: 28rem;
+  cursor: pointer;
+  background: #f5f5f5;
+}
+
+.folder > span {
+  margin: 0 0.5rem 0.25rem 0;
+}
+
+.file {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem;
+  width: 8rem;
+  cursor: pointer;
+}
+
+.actionButtons {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
