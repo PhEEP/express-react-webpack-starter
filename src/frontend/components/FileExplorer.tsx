@@ -10,7 +10,26 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
 }: FileExplorerProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const [selectedItem, setSelectedItem] = useState<FileItem | null>(null)
-  // TODO add styling, icons, etc.
+  const handleNewItem = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    itemType: string
+  ) => {
+    e.stopPropagation()
+    setIsExpanded(true)
+    if (itemType === "folder") {
+      console.log("Creating new folder in: ", fileSystem.id)
+    }
+    if (itemType === "file") {
+      console.log("Creating new file in: ", fileSystem.id)
+    }
+  }
+  const handleDeleteItem = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    itemId: number
+  ) => {
+    e.stopPropagation()
+    console.log("Deleting item with id: ", itemId)
+  }
   if (fileSystem.isFolder) {
     return (
       <div className='directory'>
@@ -30,9 +49,11 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
             <button onClick={() => setIsExpanded(!isExpanded)}>
               {isExpanded ? "Collapse" : "Expand"}
             </button>
-            <button>➕📁</button>
-            <button>➕📄</button>
-            <button>🗑️</button>
+            <button onClick={(e) => handleNewItem(e, "folder")}>➕📁</button>
+            <button onClick={(e) => handleNewItem(e, "file")}>➕📄</button>
+            <button onClick={(e) => handleDeleteItem(e, fileSystem.id)}>
+              🗑️
+            </button>
           </div>
         </div>
         {isExpanded &&
@@ -42,6 +63,11 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
       </div>
     )
   } else {
-    return <span className='file'>📄 {fileSystem.name}</span>
+    return (
+      <span className='file'>
+        📄 {fileSystem.name}{" "}
+        <button onClick={(e) => handleDeleteItem(e, fileSystem.id)}>🗑️</button>
+      </span>
+    )
   }
 }
