@@ -37,6 +37,8 @@
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "css-loader": "^6.8.1",
+    "express": "^4.17.1",
+    "style-loader": "^3.3.3"
   }
 }
