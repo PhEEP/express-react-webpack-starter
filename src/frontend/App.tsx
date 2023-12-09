@@ -5,7 +5,7 @@ interface AppProps {
   name: string
 }
 
-type FileItem = {
+export type FileItem = {
   id: number
   isFolder: boolean
   items: FileItem[]
@@ -24,23 +24,19 @@ export class App extends React.Component<AppProps, AppState> {
     }
   }
 
-  componentDidMount() {
-    this.getTime()
-    setInterval(this.getTime, 2000)
-  }
-
   render() {
     const { name } = this.props
     const { fileExplorer } = this.state
     return (
       <>
         <h1>{name}</h1>
+        <button onClick={() => this.initFileExplorer()}>Demo</button>
         <pre>{JSON.stringify(fileExplorer, null, 2)}</pre>
       </>
     )
   }
 
-  private getTime = async () => {
+  private initFileExplorer = async () => {
     const response = await fetch("/api/initializeFileExplorer", {
       method: "GET",
     })
