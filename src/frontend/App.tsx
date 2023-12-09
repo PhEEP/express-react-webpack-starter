@@ -1,17 +1,21 @@
 import * as React from "react"
 import { createRoot } from "react-dom/client"
+import { FileExplorer } from "./components/FileExplorer"
 
+// App name is passed as prop
 interface AppProps {
   name: string
 }
 
+// FileItem is a recursive type which describes a folder or a file
 export type FileItem = {
   id: number
   isFolder: boolean
-  items: FileItem[]
+  items?: FileItem[]
   name: string
 }
 
+// AppState is the state of the App component, set initially to null
 interface AppState {
   fileExplorer: FileItem[] | null
 }
@@ -31,6 +35,7 @@ export class App extends React.Component<AppProps, AppState> {
       <>
         <h1>{name}</h1>
         <button onClick={() => this.initFileExplorer()}>Demo</button>
+        {this.state.fileExplorer && <FileExplorer fileSystem={fileExplorer} />}
         <pre>{JSON.stringify(fileExplorer, null, 2)}</pre>
       </>
     )
