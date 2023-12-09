@@ -18,6 +18,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
           display: "flex",
           flexDirection: "column",
           paddingLeft: "1rem",
+          borderLeft: "1px dotted rebeccapurple",
         }}
       >
         <div
