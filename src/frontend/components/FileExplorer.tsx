@@ -13,14 +13,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
   // TODO add styling, icons, etc.
   if (fileSystem.isFolder) {
     return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          paddingLeft: "1rem",
-          borderLeft: "1px dotted rebeccapurple",
-        }}
-      >
+      <div className='directory'>
         <div
           style={{
             ...(selectedItem?.id === fileSystem.id
@@ -44,7 +37,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
         </div>
         {isExpanded &&
           fileSystem.items?.map((fileItem: FileItem) => (
-            <FileExplorer fileSystem={fileItem} />
+            <FileExplorer fileSystem={fileItem} key={fileItem.id} />
           ))}
       </div>
     )
