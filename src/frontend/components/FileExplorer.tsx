@@ -10,19 +10,36 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
 }: FileExplorerProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const [selectedItem, setSelectedItem] = useState<FileItem | null>(null)
+  const [addingNewItem, setAddingNewItem] = useState({
+    isFolder: false,
+    visible: false,
+  })
+
   const handleNewItem = (
     e: React.MouseEvent<HTMLButtonElement>,
-    itemType: string
+    isFolder: boolean
   ) => {
     e.stopPropagation()
     setIsExpanded(true)
-    if (itemType === "folder") {
+    if (isFolder) {
       console.log("Creating new folder in: ", fileSystem.id)
+      setAddingNewItem({ isFolder: true, visible: true })
     }
-    if (itemType === "file") {
+    if (!isFolder) {
       console.log("Creating new file in: ", fileSystem.id)
+      setAddingNewItem({ isFolder: false, visible: true })
     }
   }
+
+  const handleSelectItem = (
+    e: React.MouseEvent<HTMLDivElement>,
+    fileSystem: FileItem
+  ) => {
+    e.stopPropagation()
+    setSelectedItem(fileSystem)
+  }
+
+  //
   const handleDeleteItem = (
     e: React.MouseEvent<HTMLButtonElement>,
     itemId: number
@@ -30,6 +47,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
     e.stopPropagation()
     console.log("Deleting item with id: ", itemId)
   }
+
   if (fileSystem.isFolder) {
     return (
       <div className='directory'>
@@ -40,7 +58,9 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
               : null),
           }}
           className='folder'
-          onClick={() => setSelectedItem(fileSystem)}
+          onClick={(e) => {
+            handleSelectItem(e, fileSystem)
+          }}
         >
           <span>
             {isExpanded ? "📂" : "📁"} {fileSystem.name}
@@ -49,13 +69,27 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
             <button onClick={() => setIsExpanded(!isExpanded)}>
               {isExpanded ? "Collapse" : "Expand"}
             </button>
-            <button onClick={(e) => handleNewItem(e, "folder")}>➕📁</button>
-            <button onClick={(e) => handleNewItem(e, "file")}>➕📄</button>
+            <button onClick={(e) => handleNewItem(e, true)}>➕📁</button>
+            <button onClick={(e) => handleNewItem(e, false)}>➕📄</button>
             <button onClick={(e) => handleDeleteItem(e, fileSystem.id)}>
               🗑️
             </button>
           </div>
         </div>
+        {addingNewItem.visible && (
+          <div className='newItem'>
+            {addingNewItem.isFolder ? "📁" : "📄"}
+            <input
+              type='text'
+              placeholder={addingNewItem.isFolder ? "Folder name" : "File name"}
+              autoFocus
+              onBlur={() =>
+                setAddingNewItem({ ...addingNewItem, visible: false })
+              }
+            />
+            <button>Save</button>
+          </div>
+        )}
         {isExpanded &&
           fileSystem.items?.map((fileItem: FileItem) => (
             <FileExplorer fileSystem={fileItem} key={fileItem.id} />
