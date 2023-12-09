@@ -1,7 +1,19 @@
 import { FileItem } from "../App"
 
 export const useTreeWalker = () => {
-  function insertNode(tree: FileItem, folderId: number, payload: FileItem) {
+  /**
+   * Inserts a node into the tree
+   * @param tree the tree to insert into
+   * @param folderId the id of the folder to insert into
+   * @param payload the payload to insert\
+   * @returns the tree with the node inserted
+   * Kept this function agnostic of the data being inserted to keep it more composable
+   */
+  function insertNode(
+    tree: FileItem,
+    folderId: number,
+    payload: FileItem
+  ): FileItem {
     // if our current tree is the folder we want to insert into
     // and it is a folder, then we insert
     if (tree.id === folderId && tree.isFolder) {
@@ -13,6 +25,7 @@ export const useTreeWalker = () => {
         insertNode(child, folderId, payload)
       })
     }
+    return tree
   }
 
   return { insertNode }
