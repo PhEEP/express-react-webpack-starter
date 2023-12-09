@@ -3,10 +3,16 @@ import { FileItem } from "../App"
 
 interface FileExplorerProps {
   fileSystem: FileItem
+  handleInsertNode: (
+    fileExplorer: FileItem,
+    folderId: FileItem["id"],
+    payload: FileItem
+  ) => void
 }
 
 export const FileExplorer: React.FC<FileExplorerProps> = ({
   fileSystem,
+  handleInsertNode,
 }: FileExplorerProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const [selectedItem, setSelectedItem] = useState<FileItem | null>(null)
@@ -15,6 +21,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
     visible: false,
   })
 
+  // detangle this mess
   const handleNewItem = (
     e: React.MouseEvent<HTMLButtonElement>,
     isFolder: boolean
@@ -22,7 +29,8 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
     e.stopPropagation()
     setIsExpanded(true)
     if (isFolder) {
-      console.log("Creating new folder in: ", fileSystem.id)
+      onAddItem(e)
+
       setAddingNewItem({ isFolder: true, visible: true })
     }
     if (!isFolder) {
@@ -31,6 +39,20 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
     }
   }
 
+  // TODO support mouse events with a button click for mobile
+  const onAddItem = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e instanceof KeyboardEvent) {
+      if (e.key === "Enter") {
+        handleInsertNode(fileSystem, fileSystem.id, {
+          id: new Date().getTime(),
+          isFolder: true,
+          name: e.currentTarget.value,
+        })
+      }
+    } else if (e instanceof MouseEvent) {
+      // handle mouse or touch event
+    }
+  }
   const handleSelectItem = (
     e: React.MouseEvent<HTMLDivElement>,
     fileSystem: FileItem
@@ -92,7 +114,11 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
         )}
         {isExpanded &&
           fileSystem.items?.map((fileItem: FileItem) => (
-            <FileExplorer fileSystem={fileItem} key={fileItem.id} />
+            <FileExplorer
+              fileSystem={fileItem}
+              key={fileItem.id}
+              handleInsertNode={handleInsertNode}
+            />
           ))}
       </div>
     )
