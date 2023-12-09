@@ -1,6 +1,7 @@
 import * as React from "react"
 import { createRoot } from "react-dom/client"
 import { FileExplorer } from "./components/FileExplorer"
+import "./styles.css"
 
 // App name is passed as prop
 interface AppProps {
@@ -17,7 +18,7 @@ export type FileItem = {
 
 // AppState is the state of the App component, set initially to null
 interface AppState {
-  fileExplorer: FileItem[] | null
+  fileExplorer: FileItem | null
 }
 
 export class App extends React.Component<AppProps, AppState> {
