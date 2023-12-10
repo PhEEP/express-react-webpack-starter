@@ -35,12 +35,10 @@ export function App({ name }: AppProps) {
 
   const { insertNode } = useTreeWalker()
 
-  const handleInsertNode = (
-    fileExplorer: FileItem,
-    folderId: FileItem["id"],
-    payload: FileItem
-  ) => {
+  const handleInsertNode = (folderId: FileItem["id"], payload: FileItem) => {
+    // create a tree with the new node inserted
     const finalTree = insertNode(fileExplorer, folderId, payload)
+    // update the file explorer state with the new tree
     setFileExplorer(finalTree)
   }
 
