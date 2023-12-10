@@ -1,22 +1,5 @@
 import React from "react"
-
-// eventuall use this to check file types and reject unsupported ones
-export type FileType =
-  | "folder"
-  | "folderOpen"
-  | "txt"
-  | "pdf"
-  | "js"
-  | "ts"
-  | "html"
-  | "css"
-  | "json"
-  | "xml"
-  | "jsx"
-  | "tsx"
-  | "jpg"
-  | "png"
-  | "gif"
+import { FileType } from "../types/files"
 
 type FileIconsProps = {
   fileType: FileType
