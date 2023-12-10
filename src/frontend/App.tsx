@@ -4,6 +4,7 @@ import { FileExplorer } from "./components/FileExplorer"
 import "./styles.css"
 import useTreeWalker from "./hooks/use-tree-walker"
 import { FileItem } from "../types/files"
+import { InitExplorers } from "./components/InitExplorers"
 
 // Favoring types by default over interfaces to avoid accidentally extending
 // an interface when you meant to simply create a new one
@@ -18,7 +19,7 @@ export function App({ name }: AppProps) {
   // may be better to use useReducer here, or even a global state management solution
   // like Redux
   const [fileExplorer, setFileExplorer] = useState<FileItem | null>(null)
-
+  const [explorers, setExplorers] = useState([])
   // favor object state for data lifecycle management
   const [fetchLifecycle, setFetchLifecycle] = useState({
     loading: false,
@@ -33,6 +34,10 @@ export function App({ name }: AppProps) {
     const finalTree = insertNode(fileExplorer, folderId, payload)
     // update the file explorer state with the new tree
     setFileExplorer(finalTree)
+  }
+
+  const handleAddExplorerView = () => {
+    setExplorers([...explorers, explorers.length + 1])
   }
 
   const handleDeleteNode = (id: FileItem["id"]) => {
@@ -57,6 +62,7 @@ export function App({ name }: AppProps) {
       })
 
       if (response.ok) {
+        handleAddExplorerView()
         setFileExplorer(await response.json())
         setFetchLifecycle({
           loading: false,
@@ -89,33 +95,24 @@ export function App({ name }: AppProps) {
   return (
     <div className='app-wrapper'>
       <h1>{name}</h1>
-      {/* Only render the demo button when not loading or complete */}
-      {fetchLifecycle.complete || fetchLifecycle.loading ? null : (
-        <button onClick={() => initFileExplorer()}>Demo</button>
-      )}
-      {fetchLifecycle.loading ? (
-        <div>
-          <h2>Fetching files</h2>
-          {/* TODO actual spinner for loading state */}
-          <div className='back-and-forth'>
-            <span>🦔</span>
-          </div>
-        </div>
-      ) : null}
-      {fetchLifecycle.error ? (
-        <div>
-          <h2>Error</h2>
-          <p>{fetchLifecycle.error}</p>
-        </div>
-      ) : null}
+      <InitExplorers
+        fetchLifecycle={fetchLifecycle}
+        handleOnClick={initFileExplorer}
+      />
+      <button onClick={handleAddExplorerView}>Add Explorer</button>
 
-      {fileExplorer ? (
-        <FileExplorer
-          fileSystem={fileExplorer}
-          handleInsertNode={handleInsertNode}
-          handleDeleteNode={handleDeleteNode}
-        />
-      ) : null}
+      <div className='explorers'>
+        {fileExplorer
+          ? explorers.map((explorer) => (
+              <FileExplorer
+                fileSystem={fileExplorer}
+                handleInsertNode={handleInsertNode}
+                handleDeleteNode={handleDeleteNode}
+                key={explorer}
+              />
+            ))
+          : null}
+      </div>
     </div>
   )
 }
