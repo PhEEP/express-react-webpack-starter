@@ -62,7 +62,7 @@ export function App({ name }: AppProps) {
   }
 
   return (
-    <>
+    <div className='app-wrapper'>
       <h1>{name}</h1>
       <button onClick={() => initFileExplorer()}>Demo</button>
       {loading ? (
@@ -87,7 +87,7 @@ export function App({ name }: AppProps) {
           handleInsertNode={handleInsertNode}
         />
       ) : null}
-    </>
+    </div>
   )
 }
 

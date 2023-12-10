@@ -53,12 +53,20 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
   //     // handle mouse or touch event
   //   }
   // }
+
+  // TODO lift the selected items to global state via context to support multiple selection
+  // Or maybe just listen to some dispatch event that will update the selected items since
+  // they are all managing their own selected states?
   const handleSelectItem = (
     e: React.MouseEvent<HTMLDivElement>,
     fileSystem: FileItem
   ) => {
     e.stopPropagation()
-    setSelectedItem(fileSystem)
+    if (selectedItem?.id === fileSystem.id) {
+      setSelectedItem(null)
+    } else {
+      setSelectedItem(fileSystem)
+    }
   }
 
   //
