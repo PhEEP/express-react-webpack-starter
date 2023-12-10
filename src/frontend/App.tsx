@@ -4,8 +4,11 @@ import { FileExplorer } from "./components/FileExplorer"
 import "./styles.css"
 import useTreeWalker from "./hooks/use-tree-walker"
 
+// Favoring types by default over interfaces to avoid accidentally extending
+// an interface when you meant to simply create a new one
+// In a project this small it may not matter, but it's a good habit to get into
 // App name is passed as prop
-interface AppProps {
+type AppProps = {
   name: string
 }
 
@@ -18,13 +21,18 @@ export type FileItem = {
 }
 
 export function App({ name }: AppProps) {
+  // our file explorer state, holds the entire file system
+  // may be better to use useReducer here, or even a global state management solution
+  // like Redux
   const [fileExplorer, setFileExplorer] = useState<FileItem | null>(null)
+
+  // favor object state for data lifecycle management
   const [fetchLifecycle, setFetchLifecycle] = useState({
     loading: false,
     error: "",
-    idle: true,
     complete: false,
   })
+
   const { insertNode } = useTreeWalker()
 
   const handleInsertNode = (
@@ -36,10 +44,6 @@ export function App({ name }: AppProps) {
     setFileExplorer(finalTree)
   }
 
-  // useEffect(() => {
-  //   initFileExplorer()
-  // }, [])
-
   const initFileExplorer = async () => {
     try {
       // Simulate network request delay
@@ -47,7 +51,6 @@ export function App({ name }: AppProps) {
         ...fetchLifecycle,
         loading: true,
         error: "",
-        idle: false,
       })
       await new Promise((resolve) => setTimeout(resolve, 2000))
 
@@ -60,14 +63,12 @@ export function App({ name }: AppProps) {
         setFetchLifecycle({
           loading: false,
           error: "",
-          idle: false,
           complete: true,
         })
       } else {
         setFetchLifecycle({
           loading: false,
           error: "Failed to initialize file explorer",
-          idle: false,
           complete: false,
         })
         throw new Error("Failed to initialize file explorer")
@@ -76,25 +77,21 @@ export function App({ name }: AppProps) {
       setFetchLifecycle({
         loading: false,
         error: "Failed to initialize file explorer",
-        idle: false,
         complete: false,
       })
       // Handle error here
     } finally {
-      // Set loading state to false
-      setFetchLifecycle({
-        ...fetchLifecycle,
-        idle: true,
-      })
+      // Handle cleanup here
     }
   }
 
   return (
     <div className='app-wrapper'>
       <h1>{name}</h1>
-      {!fetchLifecycle.complete && !fetchLifecycle.loading ? (
+      {/* Only render the demo button when not loading or complete */}
+      {fetchLifecycle.complete || fetchLifecycle.loading ? null : (
         <button onClick={() => initFileExplorer()}>Demo</button>
-      ) : null}
+      )}
       {fetchLifecycle.loading ? (
         <div>
           <h2>Fetching files</h2>
