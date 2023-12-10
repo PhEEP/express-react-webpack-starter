@@ -22,6 +22,7 @@ export type FileType =
   | "jpg"
   | "png"
   | "gif"
+  | "banana"
 
 const FileTypes: FileType[] = [
   "folder",
@@ -39,6 +40,7 @@ const FileTypes: FileType[] = [
   "jpg",
   "png",
   "gif",
+  "banana",
 ]
 
 export const isFileType = (value: string): value is FileType => {

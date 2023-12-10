@@ -22,6 +22,7 @@ const fileIcons: Record<FileType, string> = {
   xml: "🟥",
   jsx: "🟧",
   tsx: "🟦",
+  banana: "🍌",
 }
 
 const FileIcons: React.FC<FileIconsProps> = ({ fileType, classes }) => {
