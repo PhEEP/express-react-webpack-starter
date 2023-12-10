@@ -7,11 +7,18 @@
   font-family: sans-serif;
 }
 
+.explorers {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
 .directory {
   display: flex;
   flex-direction: column;
   padding-left: 1rem;
   border-left: 1px dotted rebeccapurple;
+  max-width: 420px;
 }
 
 .folder {
