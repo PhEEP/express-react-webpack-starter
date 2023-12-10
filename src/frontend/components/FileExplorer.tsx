@@ -29,7 +29,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
     e.stopPropagation()
     setIsExpanded(true)
     if (isFolder) {
-      onAddItem(e)
+      // onAddItem(e)
 
       setAddingNewItem({ isFolder: true, visible: true })
     }
@@ -40,19 +40,19 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
   }
 
   // TODO support mouse events with a button click for mobile
-  const onAddItem = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e instanceof KeyboardEvent) {
-      if (e.key === "Enter") {
-        handleInsertNode(fileSystem, fileSystem.id, {
-          id: new Date().getTime(),
-          isFolder: true,
-          name: e.currentTarget.value,
-        })
-      }
-    } else if (e instanceof MouseEvent) {
-      // handle mouse or touch event
-    }
-  }
+  // const onAddItem = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  //   if (e instanceof KeyboardEvent) {
+  //     if (e.key === "Enter") {
+  //       handleInsertNode(fileSystem, fileSystem.id, {
+  //         id: new Date().getTime(),
+  //         isFolder: true,
+  //         name: e.currentTarget.value,
+  //       })
+  //     }
+  //   } else if (e instanceof MouseEvent) {
+  //     // handle mouse or touch event
+  //   }
+  // }
   const handleSelectItem = (
     e: React.MouseEvent<HTMLDivElement>,
     fileSystem: FileItem
