@@ -19,8 +19,12 @@ export type FileItem = {
 
 export function App({ name }: AppProps) {
   const [fileExplorer, setFileExplorer] = useState<FileItem | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const [fetchLifecycle, setFetchLifecycle] = useState({
+    loading: false,
+    error: "",
+    idle: true,
+    complete: false,
+  })
   const { insertNode } = useTreeWalker()
 
   const handleInsertNode = (
@@ -39,8 +43,12 @@ export function App({ name }: AppProps) {
   const initFileExplorer = async () => {
     try {
       // Simulate network request delay
-      setLoading(true)
-      setError(false)
+      setFetchLifecycle({
+        ...fetchLifecycle,
+        loading: true,
+        error: "",
+        idle: false,
+      })
       await new Promise((resolve) => setTimeout(resolve, 2000))
 
       const response = await fetch("/api/initializeFileExplorer", {
@@ -49,23 +57,45 @@ export function App({ name }: AppProps) {
 
       if (response.ok) {
         setFileExplorer(await response.json())
+        setFetchLifecycle({
+          loading: false,
+          error: "",
+          idle: false,
+          complete: true,
+        })
       } else {
+        setFetchLifecycle({
+          loading: false,
+          error: "Failed to initialize file explorer",
+          idle: false,
+          complete: false,
+        })
         throw new Error("Failed to initialize file explorer")
       }
     } catch (error) {
-      setError(error)
+      setFetchLifecycle({
+        loading: false,
+        error: "Failed to initialize file explorer",
+        idle: false,
+        complete: false,
+      })
       // Handle error here
     } finally {
       // Set loading state to false
-      setLoading(false)
+      setFetchLifecycle({
+        ...fetchLifecycle,
+        idle: true,
+      })
     }
   }
 
   return (
     <div className='app-wrapper'>
       <h1>{name}</h1>
-      <button onClick={() => initFileExplorer()}>Demo</button>
-      {loading ? (
+      {!fetchLifecycle.complete && !fetchLifecycle.loading ? (
+        <button onClick={() => initFileExplorer()}>Demo</button>
+      ) : null}
+      {fetchLifecycle.loading ? (
         <div>
           <h2>Fetching files</h2>
           {/* TODO actual spinner for loading state */}
@@ -74,10 +104,10 @@ export function App({ name }: AppProps) {
           </div>
         </div>
       ) : null}
-      {error ? (
+      {fetchLifecycle.error ? (
         <div>
           <h2>Error</h2>
-          <p>Failed to initialize file explorer.</p>
+          <p>{fetchLifecycle.error}</p>
         </div>
       ) : null}
 
