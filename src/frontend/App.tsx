@@ -52,7 +52,7 @@ export function App({ name }: AppProps) {
         error: "",
       })
       // Simulate network request delay
-      await new Promise((resolve) => setTimeout(resolve, 1500))
+      await new Promise((resolve) => setTimeout(resolve, 500))
 
       const response = await fetch("/api/initializeFileExplorer", {
         method: "GET",

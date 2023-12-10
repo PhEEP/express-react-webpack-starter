@@ -29,8 +29,6 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
     e.stopPropagation()
     setIsExpanded(true)
     if (isFolder) {
-      // onAddItem(e)
-
       setAddingNewItem({ isFolder: true, visible: true })
     }
     if (!isFolder) {
@@ -39,20 +37,14 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
     }
   }
 
-  // TODO support mouse events with a button click for mobile
-  // const onAddItem = (e: React.KeyboardEvent<HTMLInputElement>) => {
-  //   if (e instanceof KeyboardEvent) {
-  //     if (e.key === "Enter") {
-  //       handleInsertNode(fileSystem, fileSystem.id, {
-  //         id: new Date().getTime(),
-  //         isFolder: true,
-  //         name: e.currentTarget.value,
-  //       })
-  //     }
-  //   } else if (e instanceof MouseEvent) {
-  //     // handle mouse or touch event
-  //   }
-  // }
+  // this is a form submission handler
+  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const form = e.currentTarget
+    const formData = new FormData(form)
+    const fileItem = formData.get("fileItem") as string
+    console.log(fileItem, "isFolder: ", addingNewItem.isFolder)
+  }
 
   // TODO lift the selected items to global state via context to support multiple selection
   // Or maybe just listen to some dispatch event that will update the selected items since
@@ -108,16 +100,29 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
         </div>
         {addingNewItem.visible && (
           <div className='newItem'>
-            {addingNewItem.isFolder ? "📁" : "📄"}
-            <input
-              type='text'
-              placeholder={addingNewItem.isFolder ? "Folder name" : "File name"}
-              autoFocus
-              onBlur={() =>
-                setAddingNewItem({ ...addingNewItem, visible: false })
-              }
-            />
-            <button>Save</button>
+            <form onSubmit={handleSubmit}>
+              <label htmlFor='fileItem'>
+                {addingNewItem.isFolder ? "📁" : "📄"}
+                <input
+                  type='text'
+                  name='fileItem'
+                  placeholder={
+                    addingNewItem.isFolder ? "Folder name" : "File name"
+                  }
+                  autoFocus
+                  // I'm sorry, I'm so sorry, I just wanted the form submission to work and retain the input disappearing on blur...
+                  // Please forgive me 🙏🏻
+                  onBlur={() =>
+                    setInterval(() => {
+                      setAddingNewItem({ ...addingNewItem, visible: false })
+                    }, 100)
+                  }
+                  required
+                  aria-required
+                />
+              </label>
+              <button type='submit'>Save</button>
+            </form>
           </div>
         )}
         {isExpanded &&
