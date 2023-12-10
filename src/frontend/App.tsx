@@ -20,6 +20,7 @@ export type FileItem = {
 export function App({ name }: AppProps) {
   const [fileExplorer, setFileExplorer] = useState<FileItem | null>(null)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
   const { insertNode } = useTreeWalker()
 
   const handleInsertNode = (
@@ -39,6 +40,7 @@ export function App({ name }: AppProps) {
     try {
       // Simulate network request delay
       setLoading(true)
+      setError(false)
       await new Promise((resolve) => setTimeout(resolve, 2000))
 
       const response = await fetch("/api/initializeFileExplorer", {
@@ -51,7 +53,7 @@ export function App({ name }: AppProps) {
         throw new Error("Failed to initialize file explorer")
       }
     } catch (error) {
-      console.error(error)
+      setError(error)
       // Handle error here
     } finally {
       // Set loading state to false
@@ -69,17 +71,20 @@ export function App({ name }: AppProps) {
           {/* TODO actual spinner for loading state */}
           <span className='spinner'>🦔</span>
         </div>
-      ) : (
-        <>
-          {fileExplorer && (
-            <FileExplorer
-              fileSystem={fileExplorer}
-              handleInsertNode={handleInsertNode}
-            />
-          )}
-          <pre>{JSON.stringify(fileExplorer, null, 2)}</pre>
-        </>
-      )}
+      ) : null}
+      {error ? (
+        <div>
+          <h2>Error</h2>
+          <p>Failed to initialize file explorer.</p>
+        </div>
+      ) : null}
+
+      {fileExplorer ? (
+        <FileExplorer
+          fileSystem={fileExplorer}
+          handleInsertNode={handleInsertNode}
+        />
+      ) : null}
     </>
   )
 }
