@@ -69,7 +69,9 @@ export function App({ name }: AppProps) {
         <div>
           <h2>Fetching files</h2>
           {/* TODO actual spinner for loading state */}
-          <span className='spinner'>🦔</span>
+          <div className='back-and-forth'>
+            <span>🦔</span>
+          </div>
         </div>
       ) : null}
       {error ? (

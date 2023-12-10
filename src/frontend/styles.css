@@ -55,18 +55,32 @@ button {
   align-items: center;
 }
 
-@keyframes spin {
+@keyframes back-and-forth {
   0% {
-    transform: rotate(0deg);
+    transform: translateX(0%) scaleX(-1);
   }
-
+  50% {
+    transform: translateX(100%) scaleX(-1);
+  }
+  /* it was transforming the flip while moving which looked weird, so this little thing catches that edge case */
+  51% {
+    transform: translateX(100%) scaleX(1);
+  }
   100% {
-    transform: rotate(360deg);
+    transform: translateX(0%) scaleX(1);
   }
 }
 
-.spinner {
+.back-and-forth {
+  display: flex;
+  width: 100%;
+  max-width: 320px;
   margin-left: 0.5rem;
-  animation: spin 1s linear infinite;
-  transition: all 0.5s ease;
+}
+
+.back-and-forth > span {
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  animation: back-and-forth 1s linear infinite;
 }
