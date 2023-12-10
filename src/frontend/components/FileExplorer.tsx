@@ -117,13 +117,6 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
                     addingNewItem.isFolder ? "Folder name" : "File name"
                   }
                   autoFocus
-                  // I'm sorry, I'm so sorry, I just wanted the form submission to work and retain the input disappearing on blur...
-                  // Please forgive me 🙏🏻
-                  // onBlur={() =>
-                  //   setInterval(() => {
-                  //     !addingNewItem.setAddingNewItem({ ...addingNewItem, visible: false })
-                  //   }, 500)
-                  // }
                   required
                   aria-required
                 />
