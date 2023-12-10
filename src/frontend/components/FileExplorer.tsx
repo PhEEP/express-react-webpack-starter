@@ -25,6 +25,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
     isFolder: boolean
   ) => {
     e.stopPropagation()
+    setIsExpanded(!addingNewItem.visible)
     setAddingNewItem({ isFolder, visible: !addingNewItem.visible })
   }
 
@@ -38,10 +39,6 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
     // if (!fileName) return
 
     const fileExtension = fileName?.split(".")[1]?.toLowerCase()
-    console.log(
-      "🚀 ~ file: FileExplorer.tsx:39 ~ handleSubmit ~ fileExtension:",
-      fileExtension
-    )
 
     // rudimentary file extension validation
     if (
@@ -99,7 +96,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
             <button onClick={() => setIsExpanded(!isExpanded)}>
               {isExpanded ? "Collapse" : "Expand"}
             </button>
-            {selectedItem ? (
+            {selectedItem || isExpanded ? (
               <>
                 <button onClick={(e) => handleNewItem(e, true)}>➕📁</button>
                 <button onClick={(e) => handleNewItem(e, false)}>➕📄</button>
