@@ -91,9 +91,6 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
             {fileSystem.name}
           </span>
           <div className='actionButtons'>
-            <button onClick={() => setIsExpanded(!isExpanded)}>
-              {isExpanded ? "Collapse" : "Expand"}
-            </button>
             {selectedItem || isExpanded ? (
               <>
                 <button onClick={(e) => handleNewItem(e, true)}>📁➕</button>
@@ -101,6 +98,9 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
                 <button onClick={(e) => handleDeleteItem(e)}>🗑️</button>
               </>
             ) : null}
+            <button onClick={() => setIsExpanded(!isExpanded)}>
+              {isExpanded ? "➖" : "➕"}
+            </button>
           </div>
         </div>
         {addingNewItem.visible && (
@@ -148,7 +148,13 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
     )
   } else {
     return (
-      <span className='file'>
+      <span
+        className='folder'
+        onClick={handleSelectItem}
+        style={{
+          ...(selectedItem ? { background: "lightGrey" } : null),
+        }}
+      >
         <FileIcons fileType={fileSystem.name.split(".")[1] as FileType} />{" "}
         {fileSystem.name}{" "}
         <button onClick={(e) => handleDeleteItem(e)}>🗑️</button>
