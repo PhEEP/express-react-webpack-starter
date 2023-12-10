@@ -46,13 +46,13 @@ export function App({ name }: AppProps) {
 
   const initFileExplorer = async () => {
     try {
-      // Simulate network request delay
       setFetchLifecycle({
         ...fetchLifecycle,
         loading: true,
         error: "",
       })
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      // Simulate network request delay
+      await new Promise((resolve) => setTimeout(resolve, 1500))
 
       const response = await fetch("/api/initializeFileExplorer", {
         method: "GET",
@@ -79,9 +79,12 @@ export function App({ name }: AppProps) {
         error: "Failed to initialize file explorer",
         complete: false,
       })
-      // Handle error here
     } finally {
       // Handle cleanup here
+      // Canceling any ongoing network requests or subscriptions.
+      // Resetting any temporary variables or flags.
+      // Clearing any cached data or state.
+      // Releasing any acquired resources, such as closing database connections or file handles.
     }
   }
 
