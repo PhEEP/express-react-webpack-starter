@@ -9,6 +9,7 @@ export const useTreeWalker = () => {
    * @returns the tree with the node inserted
    * Kept this function agnostic of the data being inserted to keep it more composable
    */
+  // support adding to nodes past the first level
   function insertNode(
     tree: FileItem,
     folderId: number,
@@ -17,15 +18,17 @@ export const useTreeWalker = () => {
     // if our current tree is the folder we want to insert into
     // and it is a folder, then we insert
     if (tree.id === folderId && tree.isFolder) {
-      // inserts at beginning of array
+      // inserts at beginning of items array
       tree.items.unshift(payload)
-    } else {
-      // if not, we recurse
-      tree.items.forEach((child) => {
-        insertNode(child, folderId, payload)
-      })
+      return tree
     }
-    return tree
+    // lastNode is the result of inserting into each of the children
+    let lastNode: FileItem[]
+    lastNode = tree.items?.map((item) => {
+      return insertNode(item, folderId, payload)
+    })
+    // return the tree with the lastNode inserted
+    return { ...tree, items: lastNode }
   }
 
   return { insertNode }
