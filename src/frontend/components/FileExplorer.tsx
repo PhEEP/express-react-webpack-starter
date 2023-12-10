@@ -98,8 +98,8 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
             </button>
             {selectedItem || isExpanded ? (
               <>
-                <button onClick={(e) => handleNewItem(e, true)}>➕📁</button>
-                <button onClick={(e) => handleNewItem(e, false)}>➕📄</button>
+                <button onClick={(e) => handleNewItem(e, true)}>📁➕</button>
+                <button onClick={(e) => handleNewItem(e, false)}>📄➕</button>
                 <button onClick={(e) => handleDeleteItem(e, fileSystem.id)}>
                   🗑️
                 </button>
