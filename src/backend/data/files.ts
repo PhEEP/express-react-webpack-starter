@@ -1,4 +1,4 @@
-import { FileItem } from "../../frontend/App"
+import { FileItem } from "../../types/files"
 
 export const files: FileItem = {
   id: 1,

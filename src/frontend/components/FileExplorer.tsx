@@ -1,16 +1,17 @@
 import React, { useState } from "react"
-import { FileItem } from "../App"
 import FileIcons from "./FileIcons"
-import { isFileType, type FileType } from "../types/files"
+import { isFileType, type FileType, type FileItem } from "../../types/files"
 
 interface FileExplorerProps {
   fileSystem: FileItem
   handleInsertNode: (folderId: FileItem["id"], payload: FileItem) => void
+  handleDeleteNode?: (id: FileItem["id"]) => void
 }
 
 export const FileExplorer: React.FC<FileExplorerProps> = ({
   fileSystem,
   handleInsertNode,
+  handleDeleteNode,
 }: FileExplorerProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const [selectedItem, setSelectedItem] = useState(false)
@@ -68,12 +69,9 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
   }
 
   //
-  const handleDeleteItem = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    itemId: number
-  ) => {
+  const handleDeleteItem = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
-    console.log("Deleting item with id: ", itemId)
+    handleDeleteNode(fileSystem.id)
   }
 
   if (fileSystem.isFolder) {
@@ -100,9 +98,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
               <>
                 <button onClick={(e) => handleNewItem(e, true)}>📁➕</button>
                 <button onClick={(e) => handleNewItem(e, false)}>📄➕</button>
-                <button onClick={(e) => handleDeleteItem(e, fileSystem.id)}>
-                  🗑️
-                </button>
+                <button onClick={(e) => handleDeleteItem(e)}>🗑️</button>
               </>
             ) : null}
           </div>
@@ -138,13 +134,16 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
           </div>
         )}
         {isExpanded &&
-          fileSystem.items?.map((fileItem: FileItem) => (
-            <FileExplorer
-              fileSystem={fileItem}
-              key={fileItem.id}
-              handleInsertNode={handleInsertNode}
-            />
-          ))}
+          fileSystem.items?.map((fileItem: FileItem) =>
+            fileItem ? (
+              <FileExplorer
+                fileSystem={fileItem}
+                key={fileItem.id}
+                handleInsertNode={handleInsertNode}
+                handleDeleteNode={handleDeleteNode}
+              />
+            ) : null
+          )}
       </div>
     )
   } else {
@@ -152,7 +151,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
       <span className='file'>
         <FileIcons fileType={fileSystem.name.split(".")[1] as FileType} />{" "}
         {fileSystem.name}{" "}
-        <button onClick={(e) => handleDeleteItem(e, fileSystem.id)}>🗑️</button>
+        <button onClick={(e) => handleDeleteItem(e)}>🗑️</button>
       </span>
     )
   }

@@ -1,5 +1,5 @@
 import React from "react"
-import { FileType } from "../types/files"
+import { FileType } from "../../types/files"
 
 type FileIconsProps = {
   fileType: FileType

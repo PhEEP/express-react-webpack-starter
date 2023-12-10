@@ -3,20 +3,13 @@ import { createRoot } from "react-dom/client"
 import { FileExplorer } from "./components/FileExplorer"
 import "./styles.css"
 import useTreeWalker from "./hooks/use-tree-walker"
+import { FileItem } from "../types/files"
 
 // Favoring types by default over interfaces to avoid accidentally extending
 // an interface when you meant to simply create a new one
 // In a project this small it may not matter, but it's a good habit to get into
 // App name is passed as prop
 type AppProps = {
-  name: string
-}
-
-// FileItem is a recursive type which describes a folder or a file
-export type FileItem = {
-  id: number
-  isFolder: boolean
-  items?: FileItem[]
   name: string
 }
 
@@ -33,11 +26,18 @@ export function App({ name }: AppProps) {
     complete: false,
   })
 
-  const { insertNode } = useTreeWalker()
+  const { deleteNode, insertNode } = useTreeWalker()
 
   const handleInsertNode = (folderId: FileItem["id"], payload: FileItem) => {
     // create a tree with the new node inserted
     const finalTree = insertNode(fileExplorer, folderId, payload)
+    // update the file explorer state with the new tree
+    setFileExplorer(finalTree)
+  }
+
+  const handleDeleteNode = (id: FileItem["id"]) => {
+    // create a tree with the new node inserted
+    const finalTree = deleteNode(fileExplorer, id)
     // update the file explorer state with the new tree
     setFileExplorer(finalTree)
   }
@@ -113,6 +113,7 @@ export function App({ name }: AppProps) {
         <FileExplorer
           fileSystem={fileExplorer}
           handleInsertNode={handleInsertNode}
+          handleDeleteNode={handleDeleteNode}
         />
       ) : null}
     </div>

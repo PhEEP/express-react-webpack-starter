@@ -1,4 +1,11 @@
-// eventuall use this to check file types and reject unsupported ones
+// FileItem is a recursive type which describes a folder or a file
+export type FileItem = {
+  id: number
+  isFolder: boolean
+  items?: FileItem[]
+  name: string
+}
+
 export type FileType =
   | "folder"
   | "folderOpen"
