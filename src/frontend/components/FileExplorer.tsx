@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { FileItem } from "../App"
+import FileIcons from "./FileIcons"
 
 interface FileExplorerProps {
   fileSystem: FileItem
@@ -85,7 +86,8 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
           }}
         >
           <span>
-            {isExpanded ? "📂" : "📁"} {fileSystem.name}
+            <FileIcons fileType={isExpanded ? "folderOpen" : "folder"} />
+            {fileSystem.name}
           </span>
           <div className='actionButtons'>
             <button onClick={() => setIsExpanded(!isExpanded)}>
@@ -102,7 +104,9 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
           <div className='newItem'>
             <form onSubmit={handleSubmit}>
               <label htmlFor='fileItem'>
-                {addingNewItem.isFolder ? "📁" : "📄"}
+                <FileIcons
+                  fileType={addingNewItem.isFolder ? "folder" : "text"}
+                />
                 <input
                   type='text'
                   name='fileItem'
