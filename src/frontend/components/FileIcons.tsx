@@ -4,8 +4,7 @@ import React from "react"
 export type FileType =
   | "folder"
   | "folderOpen"
-  | "text"
-  | "image"
+  | "txt"
   | "pdf"
   | "js"
   | "ts"
@@ -15,6 +14,9 @@ export type FileType =
   | "xml"
   | "jsx"
   | "tsx"
+  | "jpg"
+  | "png"
+  | "gif"
 
 type FileIconsProps = {
   fileType: FileType
@@ -24,8 +26,10 @@ type FileIconsProps = {
 const fileIcons: Record<FileType, string> = {
   folder: "📁",
   folderOpen: "📂",
-  text: "📄",
-  image: "🖼️",
+  txt: "📄",
+  jpg: "🖼️",
+  png: "🖼️",
+  gif: "🖼️",
   pdf: "📑",
   js: "🟨",
   ts: "🔵",

@@ -12,7 +12,7 @@ export const files: FileItem = {
       items: [
         {
           id: 3,
-          name: "file1.txt",
+          name: "file1.pdf",
           isFolder: false,
         },
         {
@@ -34,7 +34,7 @@ export const files: FileItem = {
           items: [
             {
               id: 7,
-              name: "file3.txt",
+              name: "file3.jpg",
               isFolder: false,
             },
           ],
@@ -43,7 +43,7 @@ export const files: FileItem = {
     },
     {
       id: 8,
-      name: "file4.txt",
+      name: "file4.tsx",
       isFolder: false,
     },
   ],

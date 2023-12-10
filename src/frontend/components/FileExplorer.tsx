@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { FileItem } from "../App"
-import FileIcons from "./FileIcons"
+import FileIcons, { FileType } from "./FileIcons"
 
 interface FileExplorerProps {
   fileSystem: FileItem
@@ -105,7 +105,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
             <form onSubmit={handleSubmit}>
               <label htmlFor='fileItem'>
                 <FileIcons
-                  fileType={addingNewItem.isFolder ? "folder" : "text"}
+                  fileType={addingNewItem.isFolder ? "folder" : "txt"}
                 />
                 <input
                   type='text'
@@ -142,7 +142,8 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
   } else {
     return (
       <span className='file'>
-        📄 {fileSystem.name}{" "}
+        <FileIcons fileType={fileSystem.name.split(".")[1] as FileType} />{" "}
+        {fileSystem.name}{" "}
         <button onClick={(e) => handleDeleteItem(e, fileSystem.id)}>🗑️</button>
       </span>
     )
