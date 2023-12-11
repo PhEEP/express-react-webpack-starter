@@ -121,6 +121,6 @@ export function start() {
   const rootElem = document.getElementById("main")
   if (rootElem) {
     const root = createRoot(rootElem)
-    root.render(<App name="Philippe's Phile Explorer" />)
+    root.render(<App name="Philippe's File Explorer" />)
   }
 }
