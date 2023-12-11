@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from "react"
 import FileIcons from "./FileIcons"
 import { isFileType, type FileType, type FileItem } from "../../types/files"
+import { NewFileItemForm } from "./NewFileItemForm"
 
 interface FileExplorerProps {
   fileSystem: FileItem
@@ -35,34 +36,37 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
   )
 
   // this is a form submission handler
-  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setError("")
-    const form = e.currentTarget
-    const formData = new FormData(form)
-    const fileName = formData.get("fileItem") as string
-    // if (!fileName) return
+  const handleSubmit = useCallback(
+    (e: React.SyntheticEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      setError("")
+      const form = e.currentTarget
+      const formData = new FormData(form)
+      const fileName = formData.get("fileItem") as string
+      // if (!fileName) return
 
-    const fileExtension = fileName?.split(".")[1]?.toLowerCase()
+      const fileExtension = fileName?.split(".")[1]?.toLowerCase()
 
-    // rudimentary file extension validation
-    if (
-      (!addingNewItem.isFolder && !fileExtension) ||
-      (fileExtension && !isFileType(fileExtension))
-    ) {
-      setError("Invalid file extension")
-      return
-    }
+      // rudimentary file extension validation
+      if (
+        (!addingNewItem.isFolder && !fileExtension) ||
+        (fileExtension && !isFileType(fileExtension))
+      ) {
+        setError("Invalid file extension")
+        return
+      }
 
-    const fileItem: FileItem = {
-      id: Date.now(),
-      isFolder: addingNewItem.isFolder,
-      name: fileName,
-      items: addingNewItem.isFolder ? [] : undefined,
-    }
-    handleInsertNode(fileSystem.id, fileItem)
-    setAddingNewItem({ ...addingNewItem, visible: false })
-  }
+      const fileItem: FileItem = {
+        id: Date.now(),
+        isFolder: addingNewItem.isFolder,
+        name: fileName,
+        items: addingNewItem.isFolder ? [] : undefined,
+      }
+      handleInsertNode(fileSystem.id, fileItem)
+      setAddingNewItem({ ...addingNewItem, visible: false })
+    },
+    [setAddingNewItem, addingNewItem, handleInsertNode, fileSystem]
+  )
 
   // TODO lift the selected items to global state via context to support multiple selection
   // Or maybe just listen to some dispatch event that will update the selected items since
@@ -72,7 +76,6 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
     setSelectedItem(!selectedItem)
   }
 
-  //
   const handleDeleteItem = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     handleDeleteNode(fileSystem.id)
@@ -105,27 +108,11 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
           </div>
         </div>
         {addingNewItem.visible && (
-          <div className='newItem'>
-            <form onSubmit={handleSubmit}>
-              <label htmlFor='fileItem'>
-                <FileIcons
-                  fileType={addingNewItem.isFolder ? "folder" : "txt"}
-                />
-                <input
-                  type='text'
-                  name='fileItem'
-                  placeholder={
-                    addingNewItem.isFolder ? "Folder name" : "File name"
-                  }
-                  autoFocus
-                  required
-                  aria-required
-                />
-                {error ? <span>{error}</span> : null}
-              </label>
-              <button type='submit'>Save</button>
-            </form>
-          </div>
+          <NewFileItemForm
+            handleSubmit={handleSubmit}
+            error={error}
+            addingNewItem={addingNewItem}
+          />
         )}
         {isExpanded &&
           fileSystem.items?.map((fileItem: FileItem) =>
