@@ -16,7 +16,7 @@ The icons should be more accessible svgs. In general I would like to build more 
 
 ## Outstanding bugs
 
-Capital letters as file names break the `FileIcons` component. It should error or coerce the extension.
+-Capital letters as file names break the `FileIcons` component. It should error or coerce the extension.- (Fixed this)
 When all directories are deleted there's no way to reinstantiate the tree. Either should reveal the demo button or disallow deletion of `root`.
 Multi-select happens accidentally because an item is not deselected on clicking anything else. Move selection state to global store to make this clearer.
 
