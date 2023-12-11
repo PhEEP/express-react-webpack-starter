@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useCallback, useState } from "react"
 import FileIcons from "./FileIcons"
 import { isFileType, type FileType, type FileItem } from "../../types/files"
 
@@ -21,14 +21,18 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
     visible: false,
   })
 
-  const handleNewItem = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    isFolder: boolean
-  ) => {
-    e.stopPropagation()
-    setIsExpanded(!addingNewItem.visible)
-    setAddingNewItem({ isFolder, visible: !addingNewItem.visible })
-  }
+  const handleNewItem = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>, isFolder: boolean) => {
+      e.stopPropagation()
+      setIsExpanded((prevExpanded) => !prevExpanded)
+      setAddingNewItem((prevAddingNewItem) => ({
+        ...prevAddingNewItem,
+        isFolder,
+        visible: !prevAddingNewItem.visible,
+      }))
+    },
+    [setIsExpanded, setAddingNewItem]
+  )
 
   // this is a form submission handler
   const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
@@ -78,10 +82,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
     return (
       <div className='directory'>
         <div
-          style={{
-            ...(selectedItem ? { background: "lightGrey" } : null),
-          }}
-          className='folder'
+          className={"folder " + (selectedItem ? "selected" : "")}
           onClick={(e) => {
             handleSelectItem(e)
           }}
