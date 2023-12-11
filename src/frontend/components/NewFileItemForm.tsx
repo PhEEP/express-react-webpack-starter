@@ -24,7 +24,7 @@ export const NewFileItemForm: React.FC<NewFileItemProps> = ({
   addingNewItem,
 }) => {
   return (
-    <form onSubmit={handleSubmit} className='newItem'>
+    <form onSubmit={handleSubmit} className='new-item-form'>
       <label htmlFor='fileItem'>
         <FileIcons fileType={addingNewItem.isFolder ? "folder" : "txt"} />
         <input

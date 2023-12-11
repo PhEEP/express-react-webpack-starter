@@ -25,7 +25,8 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
   const handleNewItem = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>, isFolder: boolean) => {
       e.stopPropagation()
-      setIsExpanded((prevExpanded) => !prevExpanded)
+      // if we're tryingt to create a new item, we need to expand the folder
+      setIsExpanded(() => true)
       setAddingNewItem((prevAddingNewItem) => ({
         ...prevAddingNewItem,
         isFolder,
@@ -43,8 +44,6 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
       const form = e.currentTarget
       const formData = new FormData(form)
       const fileName = formData.get("fileItem") as string
-      // if (!fileName) return
-
       const fileExtension = fileName?.split(".")[1]?.toLowerCase()
 
       // rudimentary file extension validation
@@ -81,6 +80,11 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
     handleDeleteNode(fileSystem.id)
   }
 
+  const handleExpandFolder = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    setIsExpanded((prevExpanded) => !prevExpanded)
+  }
+
   if (fileSystem.isFolder) {
     return (
       <div className='directory'>
@@ -102,7 +106,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
                 <button onClick={(e) => handleDeleteItem(e)}>🗑️</button>
               </>
             ) : null}
-            <button onClick={() => setIsExpanded(!isExpanded)}>
+            <button onClick={handleExpandFolder}>
               {isExpanded ? "➖" : "➕"}
             </button>
           </div>

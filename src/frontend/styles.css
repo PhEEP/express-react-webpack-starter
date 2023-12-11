@@ -61,13 +61,25 @@ html * {
   gap: 0.5rem;
 }
 
-.newItem {
+.new-item-form {
   display: flex;
   justify-content: flex-start;
   gap: 0.5rem;
   padding: 0.5rem;
+  padding-left: 1rem;
   cursor: pointer;
-  background: #f5f5f5;
+}
+
+.new-item-form input {
+  padding: 0.25rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+}
+
+.new-item-form > label {
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
 }
 
 button {
