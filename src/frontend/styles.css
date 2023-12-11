@@ -1,3 +1,10 @@
+html * {
+  box-sizing: border-box;
+  margin: 0;
+  border: none;
+  background-color: transparent;
+  color: inherit;
+}
 .app-wrapper {
   display: flex;
   flex-direction: column;
@@ -19,17 +26,16 @@
   padding-left: 1rem;
   border-left: 1px dotted rebeccapurple;
   max-width: 420px;
+  width: 100%;
 }
 
 .folder {
-  margin-top: 0.25rem;
   display: flex;
   justify-content: space-between;
   padding: 0.25rem;
-  max-width: 28rem;
-  width: 100%;
+  max-width: 100%;
+  width: 28rem;
   cursor: pointer;
-  background: #f5f5f5;
 }
 
 .folder.selected {
@@ -41,11 +47,11 @@
 }
 
 .file {
-  margin-top: 0.5rem;
+  padding-left: 0.5rem;
   display: flex;
   justify-content: space-between;
   padding: 0.25rem;
-  width: 8rem;
+  width: 100%;
   cursor: pointer;
 }
 

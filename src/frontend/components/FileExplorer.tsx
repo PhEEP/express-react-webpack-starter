@@ -130,15 +130,19 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
   } else {
     return (
       <span
-        className='folder'
+        className='file'
         onClick={handleSelectItem}
         style={{
           ...(selectedItem ? { background: "lightGrey" } : null),
         }}
       >
-        <FileIcons fileType={fileSystem.name.split(".")[1] as FileType} />{" "}
-        {fileSystem.name}{" "}
-        <button onClick={(e) => handleDeleteItem(e)}>🗑️</button>
+        <span>
+          <FileIcons fileType={fileSystem.name.split(".")[1] as FileType} />{" "}
+          {fileSystem.name}{" "}
+        </span>
+        {selectedItem ? (
+          <button onClick={(e) => handleDeleteItem(e)}>🗑️</button>
+        ) : null}
       </span>
     )
   }
