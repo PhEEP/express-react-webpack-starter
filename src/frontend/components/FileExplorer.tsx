@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react"
 import FileIcons from "./FileIcons"
 import { isFileType, type FileType, type FileItem } from "../../types/files"
 import { NewFileItemForm } from "./NewFileItemForm"
+import FolderChevron from "./FolderChevron"
 
 interface FileExplorerProps {
   fileSystem: FileItem
@@ -107,7 +108,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
               </>
             ) : null}
             <button onClick={handleExpandFolder}>
-              {isExpanded ? "➖" : "➕"}
+              <FolderChevron expanded={isExpanded} />
             </button>
           </div>
         </div>
