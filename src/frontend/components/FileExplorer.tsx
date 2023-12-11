@@ -5,7 +5,7 @@ import { isFileType, type FileType, type FileItem } from "../../types/files"
 interface FileExplorerProps {
   fileSystem: FileItem
   handleInsertNode: (folderId: FileItem["id"], payload: FileItem) => void
-  handleDeleteNode?: (id: FileItem["id"]) => void
+  handleDeleteNode: (id: FileItem["id"]) => void
 }
 
 export const FileExplorer: React.FC<FileExplorerProps> = ({

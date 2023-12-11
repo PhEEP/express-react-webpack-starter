@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { createRoot } from "react-dom/client"
 import { FileExplorer } from "./components/FileExplorer"
 import "./styles.css"
@@ -19,7 +19,7 @@ export function App({ name }: AppProps) {
   // may be better to use useReducer here, or even a global state management solution
   // like Redux
   const [fileExplorer, setFileExplorer] = useState<FileItem | null>(null)
-  const [explorers, setExplorers] = useState([])
+  const [explorers, setExplorers] = useState<number[]>([])
   // favor object state for data lifecycle management
   const [fetchLifecycle, setFetchLifecycle] = useState({
     loading: false,
@@ -31,7 +31,7 @@ export function App({ name }: AppProps) {
 
   const handleInsertNode = (folderId: FileItem["id"], payload: FileItem) => {
     // create a tree with the new node inserted
-    const finalTree = insertNode(fileExplorer, folderId, payload)
+    const finalTree = insertNode(fileExplorer as FileItem, folderId, payload)
     // update the file explorer state with the new tree
     setFileExplorer(finalTree)
   }
@@ -42,7 +42,7 @@ export function App({ name }: AppProps) {
 
   const handleDeleteNode = (id: FileItem["id"]) => {
     // create a tree with the new node inserted
-    const finalTree = deleteNode(fileExplorer, id)
+    const finalTree = deleteNode(fileExplorer as FileItem, id)
     // update the file explorer state with the new tree
     setFileExplorer(finalTree)
   }
@@ -119,6 +119,8 @@ export function App({ name }: AppProps) {
 
 export function start() {
   const rootElem = document.getElementById("main")
-  const root = createRoot(rootElem)
-  root.render(<App name="Philippe's Phile Explorer" />)
+  if (rootElem) {
+    const root = createRoot(rootElem)
+    root.render(<App name="Philippe's Phile Explorer" />)
+  }
 }

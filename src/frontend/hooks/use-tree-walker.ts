@@ -20,7 +20,7 @@ export const useTreeWalker = () => {
       // Insert at the beginning of items array
       return {
         ...tree,
-        items: [payload, ...tree.items],
+        items: [payload, ...(tree.items ?? [])],
       }
     }
 
@@ -51,15 +51,18 @@ export const useTreeWalker = () => {
     }
 
     // lastNode is the result of deleting from each of the children
-    let lastNode: FileItem[] | null = tree.items?.map((item) => {
-      return deleteNode(item, id)
-    })
+    let lastNode: (FileItem | null)[] | null =
+      tree.items?.map((item) => {
+        return deleteNode(item, id)
+      }) || null
 
     // Filter out null entries (deleted nodes)
-    lastNode = lastNode?.filter((node) => node !== null) as FileItem[]
+    lastNode = lastNode?.filter((node) => node !== null) as
+      | (FileItem | null)[]
+      | null
 
     // return the tree with the lastNode deleted
-    return { ...tree, items: lastNode }
+    return { ...tree, items: lastNode || [] } as FileItem
   }
 
   return { deleteNode, insertNode }
