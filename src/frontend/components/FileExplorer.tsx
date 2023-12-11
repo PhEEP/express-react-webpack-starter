@@ -95,10 +95,9 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
             handleSelectItem(e)
           }}
         >
-          <span>
-            <FileIcons fileType={isExpanded ? "folderOpen" : "folder"} />
+          <FileIcons fileType={isExpanded ? "folderOpen" : "folder"}>
             {fileSystem.name}
-          </span>
+          </FileIcons>
           <div className='actionButtons'>
             {selectedItem || isExpanded ? (
               <>
@@ -138,10 +137,9 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
         className={`file ${selectedItem ? "selected" : ""}`}
         onClick={handleSelectItem}
       >
-        <span>
-          <FileIcons fileType={fileSystem.name.split(".")[1] as FileType} />{" "}
-          {fileSystem.name}{" "}
-        </span>
+        <FileIcons fileType={fileSystem.name.split(".")[1] as FileType}>
+          {fileSystem.name}
+        </FileIcons>
         {selectedItem ? (
           <button onClick={(e) => handleDeleteItem(e)}>🗑️</button>
         ) : null}

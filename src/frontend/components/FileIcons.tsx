@@ -4,6 +4,7 @@ import { FileType } from "../../types/files"
 type FileIconsProps = {
   fileType: FileType
   classes?: string
+  children?: React.ReactNode
 }
 
 const fileIcons: Record<FileType, string> = {
@@ -25,8 +26,16 @@ const fileIcons: Record<FileType, string> = {
   banana: "🍌",
 }
 
-const FileIcons: React.FC<FileIconsProps> = ({ fileType, classes }) => {
-  return <span className={classes}>{fileIcons[fileType] || ""}</span>
+const FileIcons: React.FC<FileIconsProps> = ({
+  fileType,
+  classes,
+  children,
+}) => {
+  return (
+    <span className={classes}>
+      {fileIcons[fileType] || ""} {children}
+    </span>
+  )
 }
 
 export default FileIcons

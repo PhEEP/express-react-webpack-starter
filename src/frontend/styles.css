@@ -4,8 +4,8 @@ html * {
   border: none;
   background-color: transparent;
   color: inherit;
-  font-size: 16px;
 }
+
 .app-wrapper {
   display: flex;
   flex-direction: column;
@@ -50,12 +50,18 @@ html * {
 }
 
 .file {
-  padding-left: 0.5rem;
   display: flex;
   justify-content: space-between;
-  padding: 0.25rem;
+  align-items: center;
+  padding: 0.25rem 0.25rem 0.25rem 1.25rem;
   width: 100%;
   cursor: pointer;
+  /* 
+  hard-coded height here prevents layout jank when selecting a file
+  The button takes up additional space and causes the spacing to shift
+  Ideally the action buttons would not be localized to each folder/file
+  */
+  height: 33px;
 }
 
 .actionButtons {
