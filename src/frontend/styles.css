@@ -84,7 +84,15 @@ html * {
   border: 1px solid #ccc;
   border-radius: 0.25rem;
 }
-
+.input-error {
+  border: 1px solid red;
+  box-shadow: 0 0 5px red;
+}
+.error-message {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
 .new-item-form > label {
   margin: 0;
   padding: 0;

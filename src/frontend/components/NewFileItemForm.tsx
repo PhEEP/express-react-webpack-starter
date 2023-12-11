@@ -33,9 +33,12 @@ export const NewFileItemForm: React.FC<NewFileItemProps> = ({
           placeholder={addingNewItem.isFolder ? "Folder name" : "File name"}
           autoFocus
           required
-          aria-required
+          aria-required='true'
+          className={error ? "input-error" : ""}
         />
-        {error ? <span>{error}</span> : null}
+        <div aria-live='polite'>
+          {error && <span className='error-message'>{error}</span>}
+        </div>
       </label>
       <button type='submit'>Save</button>
     </form>

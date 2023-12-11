@@ -59,7 +59,7 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
       const fileItem: FileItem = {
         id: Date.now(),
         isFolder: addingNewItem.isFolder,
-        name: fileName,
+        name: fileName, //use lowercase file extension
         items: addingNewItem.isFolder ? [] : undefined,
       }
       handleInsertNode(fileSystem.id, fileItem)
@@ -137,7 +137,9 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
         className={`file ${selectedItem ? "selected" : ""}`}
         onClick={handleSelectItem}
       >
-        <FileIcons fileType={fileSystem.name.split(".")[1] as FileType}>
+        <FileIcons
+          fileType={fileSystem.name.split(".")[1].toLowerCase() as FileType}
+        >
           {fileSystem.name}
         </FileIcons>
         {selectedItem ? (
