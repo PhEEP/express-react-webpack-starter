@@ -38,7 +38,7 @@ html * {
   cursor: pointer;
 }
 
-.folder.selected {
+.selected {
   background: lightgrey;
 }
 
